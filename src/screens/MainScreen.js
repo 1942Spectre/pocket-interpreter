@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { Text, StyleSheet, View, TouchableOpacity, Navigation } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'; 
 import Recorder from "../components/Recorder";
+import {navigate} from "../navigationRef";
 
 
 class MainScreen extends React.Component {
@@ -22,11 +23,21 @@ class MainScreen extends React.Component {
     state = {
         isRecording:false,
         from: "EN",
-        to:"RU"
+        to:"RU",
+        record: null
     }
 
-    setRecording = () => {
-        this.setState({isRecording : !this.state.isRecording})
+    startRecording = () => {
+        console.log("Recording starts")
+        this.setState({isRecording : true, from:this.state.from, to:this.state.to })
+    }
+
+    stopRecording = (record) => {
+        console.log("Recording ends")
+        this.setState({isRecording : false , from:this.state.from, to:this.state.to , record: record })
+        // RECORDED SOUND FILE WILL BE SENT TO THE SPEECH TO TEXT API HERE
+        // RESPONSE WILL BE SENT TO THE PREVIEW SCREEN BELOW
+        navigate("Preview",{record:record})
     }
 
     swapLanguages = () => {
@@ -49,7 +60,7 @@ class MainScreen extends React.Component {
             </View>
 
             <View style={styles.Container}>
-                <TouchableOpacity onPress={() => this.setRecording()}>
+                <TouchableOpacity onPress={() =>  {this.state.isRecording ? this.stopRecording("Some Dump Text") : this.startRecording() }}>
                     <Recorder isRecording={this.state.isRecording} />
                 </TouchableOpacity>
             </View>
