@@ -20,22 +20,31 @@ class MainScreen extends React.Component {
 
 
     state = {
-        isRecording:false
+        isRecording:false,
+        from: "EN",
+        to:"RU"
     }
 
     setRecording = () => {
         this.setState({isRecording : !this.state.isRecording})
+    }
+
+    swapLanguages = () => {
+        this.setState({isRecording:this.state.isRecording, from:this.state.to, to:this.state.from})
     }
     render(){
         return(
             <View style={styles.Background}>
             <View style={styles.LangBar}>
                 <Text style={styles.LangBar_Text}>
-                    EN
+                    {this.state.from}
                 </Text>
-                <AntDesign name="swap" size={24} color="black"/>
+                <TouchableOpacity onPress={() => this.swapLanguages()}>
+                    <AntDesign name="swap" size={24} color="black"/>
+                </TouchableOpacity>
+                
                 <Text style={styles.LangBar_Text}>
-                    RU
+                    {this.state.to}
                 </Text>
             </View>
 
